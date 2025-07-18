@@ -71,8 +71,10 @@ class DuckDuckGoSearcher:
         soup = BeautifulSoup(html_content, 'html.parser')
         results = []
         
-        # Find all result containers
+        # Find all result containers - try multiple class patterns
         result_containers = soup.find_all('div', class_='result')
+        if not result_containers:
+            result_containers = soup.find_all('div', class_='web-result')
         
         for container in result_containers[:max_results]:
             try:
@@ -82,11 +84,18 @@ class DuckDuckGoSearcher:
                     title = title_element.get_text(strip=True)
                     url = title_element.get('href', '')
                     
-                    # Extract snippet
+                    # Extract snippet - updated to get text content instead of href
                     snippet_element = container.find('a', class_='result__snippet')
-                    snippet = snippet_element.get_text(strip=True) if snippet_element else ""
+                    snippet = ""
+                    if snippet_element:
+                        snippet = snippet_element.get_text(strip=True)
                     
-                    if title and url:
+                    # Clean up the snippet by removing HTML tags
+                    if snippet:
+                        # Remove <b> tags and other HTML formatting
+                        snippet = snippet.replace('<b>', '').replace('</b>', '')
+                    
+                    if title and url and url.startswith('http'):
                         results.append({
                             'title': title,
                             'url': url,
