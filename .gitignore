@@ -1,2 +1,4 @@
 searches
 venv
+__pycache__
+.env
