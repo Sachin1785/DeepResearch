@@ -143,7 +143,12 @@ class ResearchSubAgent:
     """
     
     def __init__(self, 
-                 research_topic: str,
+                 task_id: str = None,
+                 research_plan_path: str = None,
+                 research_topic: str = None,
+                 subtopic: str = None,
+                 task_description: str = None,
+                 key_areas: List[str] = None,
                  agent_name: str = None,
                  gemini_api_key: str = None,
                  model_name: str = "gemini-2.0-flash-lite"):
@@ -151,14 +156,37 @@ class ResearchSubAgent:
         Initialize the research subagent
         
         Args:
-            research_topic (str): The topic or question this agent should research
+            task_id (str): Task ID to automatically fetch details from research plan
+            research_plan_path (str): Path to research plan JSON file (defaults to Workspaces/research_plan.json)
+            research_topic (str): The main research topic (will be fetched if task_id provided)
+            subtopic (str): Specific subtopic this agent should focus on (will be fetched if task_id provided)
+            task_description (str): Detailed description of the research task (will be fetched if task_id provided)
+            key_areas (List[str]): List of key areas to focus on (will be fetched if task_id provided)
             agent_name (str): Name identifier for this agent (auto-generated if not provided)
             gemini_api_key (str): API key for Gemini (if not set in environment)
             model_name (str): Gemini model to use
         """
-        self.research_topic = research_topic
-        self.agent_name = agent_name or f"Research Agent - {research_topic[:50]}..."
+        self.task_id = task_id
         self.model_name = model_name
+        
+        # If task_id is provided, load details from research plan
+        if task_id:
+            task_details = self._load_task_from_plan(task_id, research_plan_path)
+            if task_details:
+                self.research_topic = task_details.get('research_topic', research_topic or '')
+                self.subtopic = task_details.get('subtopic', subtopic or '')
+                self.task_description = task_details.get('description', task_description or '')
+                self.key_areas = task_details.get('key_areas', key_areas or [])
+            else:
+                raise ValueError(f"Could not find task with ID '{task_id}' in research plan")
+        else:
+            # Fallback to provided parameters
+            self.research_topic = research_topic or ''
+            self.subtopic = subtopic or research_topic or ''
+            self.task_description = task_description or f"Research comprehensive information about {self.subtopic}"
+            self.key_areas = key_areas or []
+        
+        self.agent_name = agent_name or f"Research Agent - {self.subtopic[:50]}..."
         
         # Set up Gemini API key
         if gemini_api_key:
@@ -191,61 +219,108 @@ class ResearchSubAgent:
         # Create agent
         self.agent = self._create_agent()
     
+    def _load_task_from_plan(self, task_id: str, plan_path: str = None) -> Optional[Dict[str, Any]]:
+        """
+        Load task details from the research plan JSON file
+        
+        Args:
+            task_id (str): The task ID to look for
+            plan_path (str): Optional custom path to research plan file
+            
+        Returns:
+            Optional[Dict[str, Any]]: Task details or None if not found
+        """
+        try:
+            if plan_path is None:
+                plan_path = os.path.join("Workspaces", "research_plan.json")
+            
+            if not os.path.exists(plan_path):
+                print(f"Research plan file not found: {plan_path}")
+                return None
+            
+            with open(plan_path, 'r', encoding='utf-8') as f:
+                research_plan = json.load(f)
+            
+            # Find the task with matching ID
+            for task in research_plan.get("tasks", []):
+                if task.get("task_id") == task_id:
+                    # Add research topic from plan metadata
+                    task_details = task.copy()
+                    task_details['research_topic'] = research_plan.get('research_topic', '')
+                    return task_details
+            
+            print(f"Task with ID '{task_id}' not found in research plan")
+            return None
+            
+        except Exception as e:
+            print(f"Error loading task from research plan: {str(e)}")
+            return None
+    
     def _create_system_prompt(self) -> str:
         """Create the system prompt for the research subagent"""
+        key_areas_text = ", ".join(self.key_areas) if self.key_areas else "all relevant aspects"
+        
         return f"""You are a specialized research subagent named "{self.agent_name}". 
 
-Your research topic is: {self.research_topic}
+RESEARCH ASSIGNMENT:
+- Main Topic: {self.research_topic}
+- Specific Subtopic: {self.subtopic}
+- Task ID: {self.task_id}
+- Key Focus Areas: {key_areas_text}
 
-MISSION: Conduct an exhaustive, in-depth research analysis of your topic. You must gather comprehensive information from multiple angles and perspectives to create a thorough research report.
+DETAILED TASK DESCRIPTION:
+{self.task_description}
+
+MISSION: Conduct an exhaustive, in-depth research analysis of your specific subtopic. You must gather comprehensive information from multiple angles and perspectives to create a thorough research report section.
 
 DETAILED INSTRUCTIONS:
-1. You are part of a larger research system. Your job is to become an expert on your assigned topic through systematic research.
-2. Use the web_search tool extensively to find detailed information about ALL aspects of your research topic.
-3. Search for multiple subtopics, related areas, and different perspectives on your topic.
-4. Analyze the information you find and extract detailed insights, facts, statistics, case studies, and expert opinions.
-5. Save your findings using the save_research_data tool with descriptive section titles and comprehensive content.
-6. All research data will be appended to the Workspaces/research.md file, and search results will be logged in Workspaces/searches.
-7. Be extremely thorough - aim for depth over breadth, but cover all major aspects.
-8. Always cite your sources with URLs and publication details when available.
-9. Look for recent developments, historical context, and future trends.
-10. Include quantitative data, statistics, and specific examples whenever possible.
-11. If you need to read existing research files, use the read_file tool to avoid duplication.
+1. You are part of a larger research system. Your job is to become an expert on your assigned subtopic through systematic research.
+2. Use the web_search tool extensively to find detailed information about ALL aspects of your specific subtopic and key focus areas.
+3. Focus specifically on your assigned subtopic - don't drift into other areas of the main topic.
+4. Search for multiple perspectives, related areas, and different viewpoints within your subtopic.
+5. Analyze the information you find and extract detailed insights, facts, statistics, case studies, and expert opinions.
+6. Save your findings using the save_research_data tool with your subtopic as the section title and comprehensive content.
+7. All research data will be appended to the Workspaces/research.md file, and search results will be logged in Workspaces/searches.
+8. Be extremely thorough - aim for depth over breadth, but cover all major aspects of your subtopic.
+9. Always cite your sources with URLs and publication details when available.
+10. Look for recent developments, historical context, and future trends related to your subtopic.
+11. Include quantitative data, statistics, and specific examples whenever possible.
+12. If you need to read existing research files, use the read_file tool to avoid duplication.
 
 COMPREHENSIVE RESEARCH APPROACH:
-Phase 1 - Foundation Research:
-- Start with broad overview searches about your topic
-- Search for definitions, key concepts, and fundamental principles
-- Look for historical development with specific dates, names, and locations
-- Find current market size with exact figures, scope, and key players with company names
-- Search for founding dates, key milestones, and pioneer researchers by name
+Phase 1 - Foundation Research (Focus on your subtopic):
+- Start with broad overview searches about your specific subtopic
+- Search for definitions, key concepts, and fundamental principles related to your subtopic
+- Look for historical development with specific dates, names, and locations relevant to your subtopic
+- Find current market size with exact figures, scope, and key players with company names in your area
+- Search for founding dates, key milestones, and pioneer researchers by name in your subtopic
 
-Phase 2 - Deep Dive Analysis:
-- Search for specific applications, use cases, and implementations with company examples
-- Look for technical details, methodologies, and approaches with performance metrics
-- Find case studies, success stories, and real-world examples with quantitative results
-- Search for performance metrics, benchmarks, and comparisons with exact numbers
-- Look for clinical trial results, research study outcomes, and statistical evidence
+Phase 2 - Deep Dive Analysis (Within your subtopic):
+- Search for specific applications, use cases, and implementations with company examples in your area
+- Look for technical details, methodologies, and approaches with performance metrics specific to your subtopic
+- Find case studies, success stories, and real-world examples with quantitative results in your focus areas
+- Search for performance metrics, benchmarks, and comparisons with exact numbers relevant to your subtopic
+- Look for clinical trial results, research study outcomes, and statistical evidence related to your key areas
 
-Phase 3 - Multi-Perspective Research:
-- Search for different viewpoints from various stakeholders with specific quotes
-- Look for academic research, industry reports, and expert opinions with citations
-- Find regulatory perspectives, policy implications, and legal considerations with dates
-- Search for ethical considerations and social impact with statistical evidence
-- Look for country-specific regulations, approval processes, and adoption rates
+Phase 3 - Multi-Perspective Research (Your subtopic from different angles):
+- Search for different viewpoints from various stakeholders with specific quotes about your subtopic
+- Look for academic research, industry reports, and expert opinions with citations related to your area
+- Find regulatory perspectives, policy implications, and legal considerations with dates for your subtopic
+- Search for ethical considerations and social impact with statistical evidence specific to your focus areas
+- Look for country-specific regulations, approval processes, and adoption rates in your subtopic area
 
-Phase 4 - Current State & Future Trends:
-- Search for latest developments, recent breakthroughs, and innovations with dates
-- Look for emerging trends, future predictions, and market forecasts with specific projections
-- Find challenges, limitations, and areas for improvement with quantitative analysis
-- Search for ongoing research, development projects, and investments with funding amounts
-- Look for partnership announcements, acquisitions, and strategic alliances with deal values
+Phase 4 - Current State & Future Trends (Within your subtopic):
+- Search for latest developments, recent breakthroughs, and innovations with dates in your subtopic
+- Look for emerging trends, future predictions, and market forecasts with specific projections for your area
+- Find challenges, limitations, and areas for improvement with quantitative analysis specific to your subtopic
+- Search for ongoing research, development projects, and investments with funding amounts in your focus areas
+- Look for partnership announcements, acquisitions, and strategic alliances with deal values related to your subtopic
 
-Phase 5 - Comparative & Contextual Analysis:
-- Search for competitors, alternatives, and related technologies
-- Look for geographical differences and regional implementations
-- Find industry-specific applications and sector-wise adoption
-- Search for integration with other technologies and systems
+Phase 5 - Comparative & Contextual Analysis (Within your subtopic scope):
+- Search for competitors, alternatives, and related technologies within your subtopic
+- Look for geographical differences and regional implementations specific to your area
+- Find industry-specific applications and sector-wise adoption within your subtopic
+- Search for integration with other technologies and systems relevant to your focus areas
 
 SEARCH STRATEGY:
 - Use varied search terms: technical terms, common terms, synonyms
@@ -348,6 +423,10 @@ Remember: Your goal is to become the definitive expert on this topic through sys
             Dict[str, Any]: Results of the research execution
         """
         try:
+            # Update task status to in_progress
+            if self.task_id:
+                self._update_task_status("in_progress")
+            
             # Prepare input
             input_text = f"""
             Research Topic: {self.research_topic}
@@ -360,66 +439,121 @@ Remember: Your goal is to become the definitive expert on this topic through sys
             # Execute the agent
             result = self.agent.invoke({"input": input_text})
             
+            # Update task status to completed
+            if self.task_id:
+                self._update_task_status("completed")
+            
             return {
                 "agent_name": self.agent_name,
                 "research_topic": self.research_topic,
+                "subtopic": self.subtopic,
+                "task_id": self.task_id,
                 "execution_result": result,
                 "timestamp": datetime.now().isoformat(),
                 "status": "completed"
             }
             
         except Exception as e:
+            # Update task status to failed
+            if self.task_id:
+                self._update_task_status("failed")
+                
             return {
                 "agent_name": self.agent_name,
                 "research_topic": self.research_topic,
+                "subtopic": self.subtopic,
+                "task_id": self.task_id,
                 "execution_result": None,
                 "error": str(e),
                 "timestamp": datetime.now().isoformat(),
                 "status": "failed"
             }
     
+    def _update_task_status(self, status: str, plan_path: str = None):
+        """
+        Update the task status in the research plan
+        
+        Args:
+            status (str): New status for the task
+            plan_path (str): Optional custom path to research plan file
+        """
+        try:
+            if plan_path is None:
+                plan_path = os.path.join("Workspaces", "research_plan.json")
+            
+            if not os.path.exists(plan_path):
+                return
+            
+            # Load current plan
+            with open(plan_path, 'r', encoding='utf-8') as f:
+                research_plan = json.load(f)
+            
+            # Find and update the task
+            for task in research_plan.get("tasks", []):
+                if task.get("task_id") == self.task_id:
+                    task["status"] = status
+                    task["last_updated"] = datetime.now().isoformat()
+                    break
+            
+            # Update plan metadata
+            research_plan["last_updated"] = datetime.now().isoformat()
+            
+            # Check if all tasks are completed
+            completed_tasks = sum(1 for task in research_plan.get("tasks", []) if task.get("status") == "completed")
+            total_tasks = len(research_plan.get("tasks", []))
+            if completed_tasks == total_tasks:
+                research_plan["plan_status"] = "completed"
+            
+            # Save updated plan
+            with open(plan_path, 'w', encoding='utf-8') as f:
+                json.dump(research_plan, f, indent=2, ensure_ascii=False)
+                
+        except Exception as e:
+            print(f"Warning: Could not update task status: {str(e)}")
+    
     def get_status(self) -> Dict[str, str]:
         """Get current status of the subagent"""
         return {
             "agent_name": self.agent_name,
             "research_topic": self.research_topic,
+            "subtopic": self.subtopic,
+            "task_id": self.task_id,
+            "key_areas": self.key_areas,
             "model": self.model_name,
             "tools_available": [tool.name for tool in self.tools]
         }
 
 
 # Factory function to create specialized subagents
-def create_research_subagent(research_topic: str, 
-                           agent_name: str = None,
+def create_research_subagent(task_id: str,
+                           research_plan_path: str = None,
                            gemini_api_key: str = None) -> ResearchSubAgent:
     """
-    Factory function to create a research subagent
+    Factory function to create a research subagent using just a task ID
     
     Args:
-        research_topic (str): The topic or question to research
-        agent_name (str): Optional name for the agent
+        task_id (str): The task ID from the research plan
+        research_plan_path (str): Optional custom path to research plan file
         gemini_api_key (str): Optional API key for Gemini
     
     Returns:
         ResearchSubAgent: Configured research subagent
     """
     return ResearchSubAgent(
-        research_topic=research_topic,
-        agent_name=agent_name,
+        task_id=task_id,
+        research_plan_path=research_plan_path,
         gemini_api_key=gemini_api_key
     )
 
 
 # Example usage
 if __name__ == "__main__":
-    # Example of creating and using a research subagent
-    subagent = create_research_subagent(
-        research_topic="AI applications in healthcare diagnosis and treatment",
-        agent_name="Healthcare AI Researcher"
-    )
+    # Example of creating and using a research subagent with just task ID
+    # This will automatically fetch all details from the research plan
+    subagent = create_research_subagent(task_id="1")
     
     print("Subagent created:", subagent.get_status())
     
     # Execute research (uncomment to run)
     result = subagent.execute_research()
-    print("Research completed:", result)
+    # print("Research completed:", result)
