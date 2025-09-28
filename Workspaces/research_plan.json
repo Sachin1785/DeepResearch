@@ -2,147 +2,157 @@
   "tasks": [
     {
       "task_id": "1",
-      "subtopic": "Historical Overview of Cryptography and its Evolution",
-      "description": "Investigate the historical development of cryptography, from classical ciphers to modern public-key cryptography. Trace the evolution of cryptographic algorithms and their vulnerabilities to attacks. Analyze the impact of computational advancements on cryptographic security over time, highlighting key milestones and breakthroughs. Focus on the transition from symmetric to asymmetric cryptography and the motivations behind these shifts. Include a timeline of significant cryptographic events.",
-      "estimated_searches": 6,
+      "subtopic": "Historical Overview of Ocean Acidification in the North Atlantic",
+      "description": "Investigate the historical context of ocean acidification in the North Atlantic, focusing on pre-industrial pH levels and the onset of acidification. Research the primary drivers of acidification (e.g., CO2 uptake) and identify key historical datasets and research papers that document the changes over time. Analyze the methodologies used in historical pH measurements and their limitations. Focus on the period from the pre-industrial era to the early 20th century.",
+      "estimated_searches": 7,
       "key_areas": [
-        "Classical ciphers",
-        "Symmetric-key cryptography",
-        "Asymmetric-key cryptography",
-        "Cryptographic milestones"
+        "Pre-industrial pH levels",
+        "Historical CO2 uptake",
+        "Early pH measurement techniques",
+        "Key historical datasets",
+        "Onset of acidification"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T01:58:12.638983"
+      "last_updated": "2025-09-22T11:30:32.583398"
     },
     {
       "task_id": "2",
-      "subtopic": "Introduction to Quantum Computing Principles",
-      "description": "Provide a comprehensive overview of quantum computing, including fundamental concepts such as qubits, superposition, entanglement, and quantum gates. Explain the differences between classical and quantum computers. Detail the various quantum computing architectures (e.g., superconducting, trapped ion, photonic). Explore the current state of quantum hardware development, including limitations and challenges. Focus on the aspects of quantum computing relevant to cryptographic attacks.",
-      "estimated_searches": 7,
+      "subtopic": "Current State of Ocean Acidification in the North Atlantic",
+      "description": "Analyze the current pH levels and trends in the North Atlantic. Research recent data from monitoring programs (e.g., NOAA, European Marine Observation and Data Network) and scientific publications. Focus on spatial variations in pH across the North Atlantic, including coastal and open-ocean regions. Investigate the influence of seasonal cycles and regional oceanographic features (e.g., currents, upwelling) on pH. Include data from the last 10-20 years.",
+      "estimated_searches": 8,
       "key_areas": [
-        "Qubits and quantum states",
-        "Quantum gates and circuits",
-        "Quantum computing architectures",
-        "Quantum hardware limitations"
+        "Current pH levels",
+        "Spatial pH variations",
+        "Seasonal pH fluctuations",
+        "Influence of oceanographic features",
+        "Recent monitoring data"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T01:59:06.870352"
+      "last_updated": "2025-09-22T11:31:42.243041"
     },
     {
       "task_id": "3",
-      "subtopic": "Shor's Algorithm and its Impact on RSA and ECC",
-      "description": "Deep dive into Shor's algorithm, explaining its functionality and its ability to factor large numbers and solve the discrete logarithm problem. Analyze the implications of Shor's algorithm on the security of RSA and Elliptic Curve Cryptography (ECC). Quantify the potential impact on key sizes and the need for migration to post-quantum cryptography. Include examples of how Shor's algorithm works and its computational complexity.",
-      "estimated_searches": 8,
+      "subtopic": "Relationship Between pH and Salinity in the North Atlantic",
+      "description": "Investigate the correlation between pH and salinity in the North Atlantic. Research the physical and chemical processes that influence this relationship, including freshwater input, evaporation, and the carbonate system. Analyze datasets to identify any significant correlations or deviations from expected patterns. Explore how changes in salinity, due to climate change, might affect ocean acidification. Focus on identifying and explaining any regional variations.",
+      "estimated_searches": 6,
       "key_areas": [
-        "Shor's algorithm principles",
-        "RSA vulnerability",
-        "ECC vulnerability",
-        "Key size implications"
+        "Salinity's influence on pH",
+        "Freshwater input effects",
+        "Evaporation impact",
+        "Carbonate system dynamics",
+        "Regional variations in pH-salinity relationship"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:00:09.994560"
+      "last_updated": "2025-09-22T11:32:39.912937"
     },
     {
       "task_id": "4",
-      "subtopic": "Grover's Algorithm and its Impact on Symmetric-Key Cryptography",
-      "description": "Examine Grover's algorithm and its application to searching unsorted databases. Analyze how Grover's algorithm affects the security of symmetric-key algorithms like AES. Determine the impact on key sizes and the required adjustments to maintain security. Compare and contrast the impact of Grover's algorithm with Shor's algorithm in terms of cryptographic vulnerabilities. Include examples of Grover's algorithm in action.",
-      "estimated_searches": 5,
+      "subtopic": "Impacts of Ocean Acidification on Marine Ecosystems in the North Atlantic",
+      "description": "Research the biological impacts of ocean acidification on key marine species and ecosystems in the North Atlantic. Focus on the effects on calcifying organisms (e.g., shellfish, corals), plankton, and commercially important fish species. Investigate the cascading effects throughout the food web and the potential consequences for biodiversity and ecosystem services. Include studies on physiological and behavioral changes.",
+      "estimated_searches": 7,
       "key_areas": [
-        "Grover's algorithm principles",
-        "AES vulnerability",
-        "Key size adjustments",
-        "Impact comparison"
+        "Impacts on calcifying organisms",
+        "Effects on plankton",
+        "Impacts on fish species",
+        "Food web consequences",
+        "Ecosystem service implications"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:00:42.517270"
+      "last_updated": "2025-09-22T11:34:38.244646"
     },
     {
       "task_id": "5",
-      "subtopic": "Post-Quantum Cryptography (PQC) Overview",
-      "description": "Provide a comprehensive overview of post-quantum cryptography (PQC). Detail the different PQC approaches, including lattice-based cryptography, code-based cryptography, multivariate cryptography, hash-based signatures, and isogeny-based cryptography. Discuss the standardization efforts and the ongoing NIST PQC competition. Analyze the advantages and disadvantages of each PQC approach. Include examples of PQC algorithms.",
-      "estimated_searches": 7,
+      "subtopic": "Future Projections of Ocean Acidification in the North Atlantic",
+      "description": "Analyze climate models and scientific projections to understand the future trends of ocean acidification in the North Atlantic. Research the projected changes in pH under different emission scenarios (e.g., RCPs). Investigate the uncertainties associated with these projections and the factors that contribute to them. Focus on the expected rate of acidification and the potential for tipping points or abrupt changes. Include regional variations in projections.",
+      "estimated_searches": 8,
       "key_areas": [
-        "Lattice-based cryptography",
-        "Code-based cryptography",
-        "Multivariate cryptography",
-        "NIST PQC competition"
+        "Climate model projections",
+        "Emission scenario analysis",
+        "Uncertainty assessment",
+        "Rate of acidification",
+        "Regional variations in projections"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:00:52.582585"
+      "last_updated": "2025-09-22T11:37:16.876404"
     },
     {
       "task_id": "6",
-      "subtopic": "Lattice-Based Cryptography: A Deep Dive",
-      "description": "Focus specifically on lattice-based cryptography. Explain the underlying mathematical principles, including hard problems like the Shortest Vector Problem (SVP) and the Learning With Errors (LWE) problem. Analyze the security of lattice-based cryptosystems. Discuss the practical implementations and performance characteristics of lattice-based algorithms. Explore the challenges and future directions of lattice-based cryptography.",
+      "subtopic": "Monitoring and Data Collection Methods for Ocean Acidification",
+      "description": "Research the various methods used to monitor ocean acidification in the North Atlantic. Investigate the different types of sensors, platforms (e.g., buoys, ships, moorings), and analytical techniques used to measure pH, pCO2, and other relevant parameters. Evaluate the strengths and weaknesses of each method, including their accuracy, precision, and cost-effectiveness. Focus on the data quality control and assurance procedures.",
       "estimated_searches": 6,
       "key_areas": [
-        "SVP and LWE problems",
-        "Lattice-based cryptosystems",
-        "Practical implementations",
-        "Security analysis"
+        "pH sensor technologies",
+        "Monitoring platforms",
+        "Analytical techniques",
+        "Data quality control",
+        "Cost-effectiveness of methods"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:04:19.504208"
+      "last_updated": "2025-09-22T11:45:12.268410"
     },
     {
       "task_id": "7",
-      "subtopic": "Code-Based Cryptography: A Deep Dive",
-      "description": "Focus specifically on code-based cryptography. Explain the underlying mathematical principles, including the use of error-correcting codes. Analyze the security of code-based cryptosystems, focusing on attacks like the Information Set Decoding (ISD) algorithm. Discuss the practical implementations and performance characteristics of code-based algorithms. Explore the challenges and future directions of code-based cryptography.",
-      "estimated_searches": 5,
+      "subtopic": "Mitigation and Adaptation Strategies for Ocean Acidification",
+      "description": "Research potential mitigation and adaptation strategies to address ocean acidification in the North Atlantic. Investigate strategies to reduce CO2 emissions (e.g., renewable energy, carbon capture). Explore adaptation measures to protect vulnerable marine ecosystems and species (e.g., shellfish farming, habitat restoration). Analyze the feasibility and effectiveness of different strategies. Focus on policy implications.",
+      "estimated_searches": 7,
       "key_areas": [
-        "Error-correcting codes",
-        "Code-based cryptosystems",
-        "ISD attacks",
-        "Security analysis"
+        "CO2 emission reduction strategies",
+        "Adaptation measures for ecosystems",
+        "Shellfish farming adaptation",
+        "Habitat restoration",
+        "Policy implications of strategies"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:07:23.076443"
+      "last_updated": "2025-09-22T11:46:53.359293"
     },
     {
       "task_id": "8",
-      "subtopic": "Quantum-Resistant Key Exchange and Digital Signatures",
-      "description": "Investigate the specific quantum-resistant key exchange and digital signature algorithms. Analyze the security and performance of these algorithms in comparison to existing cryptographic standards. Discuss the practical considerations for implementing these algorithms in real-world applications. Focus on the transition from current standards to quantum-resistant alternatives and the challenges involved.",
-      "estimated_searches": 7,
+      "subtopic": "Economic and Social Impacts of Ocean Acidification",
+      "description": "Investigate the economic and social consequences of ocean acidification in the North Atlantic. Research the impacts on fisheries, tourism, and coastal communities. Analyze the potential economic losses and the social disruption caused by ecosystem changes. Focus on case studies of affected regions and the economic valuation of ecosystem services. Include the impact on human health.",
+      "estimated_searches": 5,
       "key_areas": [
-        "Quantum-resistant key exchange",
-        "Quantum-resistant digital signatures",
-        "Performance analysis",
-        "Implementation challenges"
+        "Impacts on fisheries",
+        "Impacts on tourism",
+        "Coastal community impacts",
+        "Economic valuation of ecosystem services",
+        "Human health impacts"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:07:33.552822"
+      "last_updated": "2025-09-22T11:47:43.594264"
     },
     {
       "task_id": "9",
-      "subtopic": "Challenges and Opportunities in Quantum-Resistant Cryptography",
-      "description": "Explore the challenges associated with the transition to quantum-resistant cryptography, including interoperability, key management, and performance overhead. Identify the opportunities for innovation and development in this field. Analyze the potential impact on various industries, such as finance, healthcare, and government. Discuss the role of standardization bodies and the importance of collaboration.",
-      "estimated_searches": 6,
+      "subtopic": "Development of a Policy Brief Summary",
+      "description": "Synthesize the key findings from the research into a concise and informative policy brief. The brief should summarize the current state of ocean acidification, the observed trends, the projected future changes, and the potential impacts on the North Atlantic. Include recommendations for policy actions to mitigate and adapt to ocean acidification. The brief should be suitable for policymakers and stakeholders.",
+      "estimated_searches": 4,
       "key_areas": [
-        "Interoperability challenges",
-        "Key management",
-        "Performance overhead",
-        "Industry impact"
+        "Summary of current state",
+        "Observed trends",
+        "Future projections",
+        "Impacts and consequences",
+        "Policy recommendations"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:07:45.120830"
+      "last_updated": "2025-09-22T11:49:16.126271"
     },
     {
       "task_id": "10",
-      "subtopic": "Future Trends and the Quantum Computing Landscape",
-      "description": "Analyze the future trends in quantum computing and their potential impact on cryptographic security. Discuss the evolution of quantum hardware and algorithms. Explore the potential for hybrid cryptographic solutions. Consider the ethical implications of quantum computing and its impact on privacy and security. Provide a forward-looking perspective on the future of cryptography in the quantum era.",
-      "estimated_searches": 8,
+      "subtopic": "Challenges and Knowledge Gaps in Ocean Acidification Research",
+      "description": "Identify the major challenges and knowledge gaps in ocean acidification research in the North Atlantic. Research areas where further investigation is needed, such as the long-term effects on specific species, the interactions between ocean acidification and other stressors (e.g., warming, pollution), and the development of effective mitigation strategies. Focus on the limitations of current research and the need for future studies.",
+      "estimated_searches": 5,
       "key_areas": [
-        "Quantum hardware evolution",
-        "Quantum algorithm development",
-        "Hybrid cryptography",
-        "Ethical implications"
+        "Long-term species effects",
+        "Interactions with other stressors",
+        "Mitigation strategy limitations",
+        "Research limitations",
+        "Future research needs"
       ],
       "status": "completed",
-      "last_updated": "2025-07-30T02:08:17.336683"
+      "last_updated": "2025-09-22T11:58:37.848945"
     }
   ],
-  "research_topic": "Impact of Quantum Computing on Cryptographic Security",
-  "plan_created": "2025-07-30T01:56:13.012931",
+  "research_topic": "Provide a report on the long-term trends in ocean acidification in the North Atlantic. The report should summarize key findings, analyze the relationships between pH and salinity, and automatically generate a summary suitable for a policy brief",
+  "plan_created": "2025-09-22T11:28:54.529784",
   "plan_status": "completed",
-  "last_updated": "2025-07-30T02:08:17.336698"
+  "last_updated": "2025-09-22T11:58:37.848951"
 }

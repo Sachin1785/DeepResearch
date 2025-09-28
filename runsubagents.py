@@ -8,11 +8,31 @@ import os
 import json
 import time
 import threading
+
 from typing import List, Dict, Any
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from subagent import create_research_subagent
 from researchplanner import ResearchPlanner
+
+# Colorful print helpers
+def log_info(msg):
+    print(f"\033[94m[INFO]\033[0m {msg}")
+
+def log_success(msg):
+    print(f"\033[92m[SUCCESS]\033[0m {msg}")
+
+def log_warning(msg):
+    print(f"\033[93m[WARNING]\033[0m {msg}")
+
+def log_error(msg):
+    print(f"\033[91m[ERROR]\033[0m {msg}")
+
+def log_task(msg):
+    print(f"\033[96m[TASK]\033[0m {msg}")
+
+import langchain
+langchain.verbose = True
 
 # Configuration
 MAX_CONCURRENT_THREADS = 1  # Limit concurrent threads to avoid token limits
@@ -197,30 +217,28 @@ class SubAgentRunner:
             return
         
         print(f"\n{'='*60}")
-        print("📊 EXECUTION SUMMARY")
+        log_info("EXECUTION SUMMARY")
         print(f"{'='*60}")
         
         completed = sum(1 for r in results if r.get("status") == "completed")
         failed = sum(1 for r in results if r.get("status") == "failed")
         total = len(results)
         
-        print(f"Total Tasks: {total}")
-        print(f"✅ Completed: {completed}")
-        print(f"❌ Failed: {failed}")
-        print(f"Success Rate: {(completed/total*100):.1f}%")
-        
+        log_info(f"Total Tasks: {total}")
+        log_success(f"Completed: {completed}")
+        log_error(f"Failed: {failed}")
+        log_info(f"Success Rate: {(completed/total*100):.1f}%")
+
         if failed > 0:
-            print(f"\n❌ Failed Tasks:")
+            log_error("Failed Tasks:")
             for result in results:
                 if result.get("status") == "failed":
-                    task_id = result.get("task_id", "Unknown")
-                    error = result.get("error", "Unknown error")
-                    print(f"  Task {task_id}: {error}")
-        
+                    log_error(str(result))
+
         # Show final progress
         progress = self.planner.get_plan_progress()
-        print(f"\n📈 Overall Progress: {progress.get('progress_percentage', 0)}% completed")
-        print(f"📝 Tasks by Status: {progress.get('tasks_by_status', {})}")
+        log_info(f"Overall Progress: {progress.get('progress_percentage', 0)}% completed")
+        log_info(f"Tasks by Status: {progress.get('tasks_by_status', {})}")
     
     def run(self):
         """
